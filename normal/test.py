@@ -5,7 +5,7 @@ from mininet.log import setLogLevel
 import networks
 
 def test():
-    net = networks.tree()
+    net = networks.tree(n_switch=2, n_host=3)
     CLI(net)
     net.stop()
 
