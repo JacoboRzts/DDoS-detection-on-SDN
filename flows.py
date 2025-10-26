@@ -1,5 +1,4 @@
 import requests
-import json
 
 CONTROLLER_IP='172.17.0.2'
 AUTH=('admin', 'admin')
