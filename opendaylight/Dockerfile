@@ -5,9 +5,10 @@ ENV PATH=$JAVA_HOME/bin:${PATH}
 
 RUN apt update
 RUN apt install -y openjdk-21-jdk
+RUN apt install -y curl
 
-COPY karaf-0.22.0.tar.gz /home/
-RUN tar xzf /home/karaf-0.22.0.tar.gz --strip-components=1 -C /home/
+RUN curl -o /home/karaf.tar.gz https://nexus.opendaylight.org/content/repositories/opendaylight.release/org/opendaylight/integration/karaf/0.22.0/karaf-0.22.0.tar.gz
+RUN tar xzf /home/karaf.tar.gz --strip-components=1 -C /home/
 
 EXPOSE 6633 6653 8080 8181
 
