@@ -26,8 +26,8 @@ def test_tree(n_switch=1, n_host=2):
         flows.load(flows.define(id=f'{i}0', priority=4, eth_type=2054, out_port='NORMAL'), i)    # ARP
         flows.load(flows.define(id=f'{i}1', priority=9, eth_type=2048, out_port='NORMAL'), i)    # Normal IPv4 Flow
         if i > 1:
-            flows.load(flows.define(id=f'{i}2', priority=1, eth_type=2048, ip_dst='10.0.0.0/24', out_port='1'), i)    # Flow to the main network
-            flows.load(flows.define(id=f'1{i}', priority=1, eth_type=2048, ip_dst=f'10.0.{i-1}.0/24', out_port=f'{n_host+1}'), 1)    # Flow from the main network
+            flows.load(flows.define(id=f'{i}2', priority=10, eth_type=2048, ip_dst='10.0.0.0/24', out_port='1'), i)    # Flow to the main network
+            flows.load(flows.define(id=f'1{i}', priority=10, eth_type=2048, ip_dst=f'10.0.{i-1}.0/24', out_port=f'{n_host+1}'), 1)    # Flow from the main network
 
 print('Removing old flows')
 flows.cleanAll()

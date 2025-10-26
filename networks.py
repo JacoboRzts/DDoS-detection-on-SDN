@@ -29,7 +29,7 @@ def tree(n_switch=1, n_host=2):
         if i > 0:
             net.addLink(switch_array[i], switch_array[0])
         for j in range(n_host):
-            net.addLink(switch_array[i], net.addHost(f'h{i}{j+1}', ip=f'10.0.{i}.{j+1}/24'))
+            net.addLink(switch_array[i], net.addHost(f'h{i}{j+1}', ip=f'10.0.{i}.{j+1}/16'))
 
     net.build()
     c1.start()
