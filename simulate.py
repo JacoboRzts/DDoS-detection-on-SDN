@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
-
 from mininet.log import setLogLevel
+from mininet.cli import CLI
 import networks
 
-def test(n_switch=2, k_hosts=2, seconds=10):
+def ddos(n_switch=2, k_hosts=2, seconds=10):
     net = networks.tree(n_switch, k_hosts)
 
     victim = net.get('h01')
@@ -26,6 +25,17 @@ def test(n_switch=2, k_hosts=2, seconds=10):
 
     net.stop()
 
+def conectivity():
+    net = networks.tree(n_switch=2, n_host=3)
+    CLI(net)
+    net.stop()
+
+def normal():
+    net = networks.tree(n_switch=2, n_host=3)
+    CLI(net)
+    net.stop()
+
+
 if __name__ == '__main__':
     setLogLevel('info')
-    test()
+    conectivity()
