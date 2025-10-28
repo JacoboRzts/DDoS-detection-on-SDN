@@ -57,8 +57,7 @@ def load(flow, id):
     id_flow = flow['flow'][0]['id']
     url = f'http://{CONTROLLER_IP}:8181/rests/data/opendaylight-inventory:nodes/node=openflow:{id}/flow-node-inventory:table=0/flow={id_flow}'
     req = requests.request(method='PUT', json=flow, url=url, auth=('admin', 'admin'), headers={'Content-Type': 'application/json'})
-    print(f'{id_flow}: {req.status_code}')
-    # print(json.dumps(flow, indent=2))
+    # print(f'{id_flow}: {req.status_code}')
 
 def cleanAll():
     for i in range(1, 10):
@@ -68,4 +67,4 @@ def cleanAll():
             if 'flow' in flows:
                 for flow in flows['flow']:
                     rd = requests.delete(auth=AUTH, url=f'http://{CONTROLLER_IP}:8181/rests/data/opendaylight-inventory:nodes/node=openflow:{i}/flow-node-inventory:table=0/flow={flow["id"]}')
-                    print(flow['id'], rd.status_code)
+                    # print(flow['id'], rd.status_code)
