@@ -1,24 +1,17 @@
 #!/bin/bash
 
-$PATH = $1    # Path of the files
-$TIME = $2    # Time to test        (20s by default)
-$HOST = $3    # Number of hosts     (3 by default)
-$SWITCH = $4  # Number of switch    (One by default)
+TIME=$1    # Time to test        (20s by default)
+HOST=$2    # Number of hosts     (3 by default)
+SWITCH=$3  # Number of switch    (One by default)
 
-# Copy the network to mininet
-docker cp $PATH/ddos.py mininet:/root/
+echo "Starting the containers"
+docker start controller mininet
 
-# Remove the old flows from the controller
-python3 del_flows.py
+echo "Uploading the network"
+docker cp networks.py mininet:/root/
 
-# Generates and load the new flows to the controller
-python3 gen_flows.py $HOST $SWITCH
+echo "Uploading the simulations"
+docker cp simulate.py mininet:/root/
 
-# Run the test
-docker exec mininet $PATH/ddos.py $TIME $HOST 
-
-# Wait to the test to finish
-sleep $TIME + 1
-
-# Copy the results 
-docker cp mininet:/root/snif/ddos_snif.pcap $PATH/traffic/
+echo "Uploading the flows"
+python3 -c "from generate_flows import tree_flows; tree_flows($HOST, $SWITCH)"
