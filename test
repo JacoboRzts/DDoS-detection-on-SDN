@@ -14,7 +14,7 @@ docker cp simulate.py mininet:/root/
 echo ""
 
 echo "Uploading the flows"
-python3 -c "from generate_flows import tree_flows; tree_flows($HOST, $SWITCH)"
+python3 -c "from generate_flows import tree_flows; tree_flows($SWITCH, $HOST)"
 echo ""
 
 echo "Running the test"
