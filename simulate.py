@@ -7,7 +7,7 @@ def ddos(n_switch=2, k_hosts=2, seconds=10):
     setLogLevel('output')
     net = networks.tree(n_switch, k_hosts)
 
-    victim = net.get('srv')
+    victim = net.get('server')
 
     # Start the simple web server
     print(f'Starting web server from server with IP {victim.IP()}')
