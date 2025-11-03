@@ -8,31 +8,21 @@ def ddos(n_switch=2, k_hosts=2, seconds=10):
     net = networks.tree(n_switch, k_hosts)
 
     victim = net.get('h01')
-    listener = net.get('h02')
 
-    switch = net.get('s1')
-    hosts = []
+    # Start the simple web server
+    victim.cmd(f'python3 -m http.server &')
 
-    for i in range(2, n_switch+1):
-        for j in range(1, k_hosts+1):
-            hosts.append(net.get(f'h{i-1}{j}'))
+    for i in range(1, n_switch):
+        for j in range(1, k_hosts + 1):
+            host = net.get(f'h{i}{j}')
+            host.cmd(f'hping3 -S --rand-source --flood -d 2048 {victim.IP()} &')
 
-    victim.cmd(f'timeout {seconds + 1} python3 -m http.server &')
-
-    # Start the traffic snif
-    switch.cmd(f'timeout {seconds + 1} tshark -i s1-eth1 -f "dst host {victim.IP()} and not arp" -w ddos.pcap')
-
-    # Start the attack from N hosts
-    for host in hosts:
-        host.cmd(f'timeout {seconds} hping3 -S -p 80 --rand-source -d 1000 --faster {victim.IP()} &')
-
-    listener.cmd(f'timeout {seconds} ping {victim.IP()} >> check.out')
-
-
+    CLI(net)
     net.stop()
 
 def normal(n_switch=2, n_host=3):
-    setLogLevel('info')
+    setLogLevel('output')
+    print('Starting the netowork ')
     net = networks.tree(n_switch, n_host)
     CLI(net)
     net.stop()
