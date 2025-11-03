@@ -26,10 +26,9 @@ def second_experiment_flows():
     flows.load(flows.define(id=44, priority=9, eth_type=2048, ip_dst='10.0.0.4/32', out_port=4), 4)
 
 def tree_flows(n_switch=1, n_host=2):
-    print('Removing old flows')
     flows.cleanAll()
     print('Upload new flows')
-    for i in range(1, n_switch+1):
+    for i in range(1, n_switch+3):
         flows.load(flows.define(id=f'{i}0', priority=4, eth_type=2054, out_port='NORMAL'), i)    # ARP
         flows.load(flows.define(id=f'{i}1', priority=9, eth_type=2048, out_port='NORMAL'), i)    # Normal IPv4 Flow
         if i > 1:

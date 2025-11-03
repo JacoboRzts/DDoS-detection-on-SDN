@@ -60,6 +60,7 @@ def load(flow, id):
     # print(f'{id_flow}: {req.status_code}')
 
 def cleanAll():
+    print('Removing old flows')
     for i in range(1, 10):
         req = requests.get(auth=AUTH, url=f'http://{CONTROLLER_IP}:8181/rests/data/opendaylight-inventory:nodes/node=openflow:{i}/flow-node-inventory:table=0')
         if req.status_code // 100 == 2:
