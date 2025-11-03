@@ -4,25 +4,28 @@ import networks
 import sys
 
 def ddos(n_switch=2, k_hosts=2, seconds=10):
-    setLogLevel('info')
+    setLogLevel('output')
     net = networks.tree(n_switch, k_hosts)
 
-    victim = net.get('h01')
+    victim = net.get('srv')
 
     # Start the simple web server
-    victim.cmd(f'python3 -m http.server &')
+    print(f'Starting web server from server with IP {victim.IP()}')
+    victim.cmd(f'python3 -m http.server 80 &')
 
-    for i in range(1, n_switch):
-        for j in range(1, k_hosts + 1):
-            host = net.get(f'h{i}{j}')
-            host.cmd(f'hping3 -S --rand-source --flood -d 2048 {victim.IP()} &')
+    hosts = net.hosts
+    for host in hosts[1:-1]:
+        print(f'Starting DoS attack from {host.name} to {victim.IP()}')
+        # SYN
+        host.cmd(f'hping3 -S --rand-source --flood -d 2048 {victim.IP()} &')
+        # ICMP
+        # host.cmd(f'hping3 -1 --rand-source --flood -d 4000 {victim.IP()} &')
 
     CLI(net)
     net.stop()
 
 def normal(n_switch=2, n_host=3):
     setLogLevel('output')
-    print('Starting the netowork ')
     net = networks.tree(n_switch, n_host)
     CLI(net)
     net.stop()
@@ -44,11 +47,7 @@ if __name__ == '__main__':
             case 'normal':
                 normal(switchs, hosts)
             case 'ddos':
-                if len(sys.argv) > 4:
-                    time = int(sys.argv[4])
-                    ddos(switchs, hosts, time)
-                else:
-                    print('Para el test DDoS se necesita el parametro tiempo al final')
+                ddos(switchs, hosts)
             case _:
                 print('No se selecciono ningun tipo de test')
     else:
