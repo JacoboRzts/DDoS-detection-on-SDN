@@ -3,7 +3,7 @@
 TYPE=$1    # Type of test to run
 SWITCH=$2  # Number of switch
 HOST=$3    # Number of hosts
-TIME=$4    # Time to test
+ATTACK=$4    # Type of DDoS attack
 
 echo "Uploading the network"
 docker cp -q networks.py mininet:/root/
@@ -13,4 +13,4 @@ docker cp -q simulate.py mininet:/root/
 
 python3 -c "from generate_flows import tree_flows; tree_flows($SWITCH, $HOST)"
 
-docker exec -it mininet python3 /root/simulate.py $TYPE $SWITCH $HOST $TIME
+docker exec -it mininet python3 /root/simulate.py $TYPE $SWITCH $HOST $ATTACK
