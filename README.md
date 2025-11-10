@@ -41,4 +41,4 @@ The syntax is:
 sh simulate type n k [syn] # optional for the ddos simulation
 ```
 
-> [!danger] Be careful with large number of hosts, especially with the DDoS simulation.
+> Be careful with large number of hosts, especially with the DDoS simulation.
