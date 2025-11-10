@@ -5,12 +5,14 @@ SWITCH=$2  # Number of switch
 HOST=$3    # Number of hosts
 ATTACK=$4    # Type of DDoS attack
 
+cd system
+
 echo "Uploading the network"
 docker cp -q networks.py mininet:/root/
 
 echo "Uploading the simulations"
 docker cp -q simulate.py mininet:/root/
 
-python3 -c "from generate_flows import tree_flows; tree_flows($SWITCH, $HOST)"
+python3 -c "from generate import tree_flows; tree_flows($SWITCH, $HOST)"
 
 docker exec -it mininet python3 /root/simulate.py $TYPE $SWITCH $HOST $ATTACK

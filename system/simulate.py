@@ -2,6 +2,7 @@ from mininet.log import setLogLevel
 from mininet.cli import CLI
 import networks
 import sys
+from datetime import datetime
 
 def ddos(n_switch=2, k_hosts=2, type='icmp'):
     setLogLevel('output')
@@ -12,8 +13,12 @@ def ddos(n_switch=2, k_hosts=2, type='icmp'):
     # Start the simple web server
     print(f'Starting web server from server with IP {victim.IP()}:80')
     victim.cmd(f'python3 -m http.server 80 &')
+    time = tiempo2 = datetime.now().strftime("%Y%m%d%H%M")
+    dir_name = f'DDOS_{type.upper()}_{time}'
+    victim.cmd(f'mkdir {dir_name}')
 
     hosts = net.hosts
+    monitors = []
     for host in hosts[1:]:
         if not str(k_hosts) in host.name:
             if type == 'syn':
@@ -21,6 +26,13 @@ def ddos(n_switch=2, k_hosts=2, type='icmp'):
             else:
                 host.cmd(f'hping3 -1 --rand-source --flood -d 2048 {victim.IP()} &')
             print(f'{type.upper()} DoS attack started from {host.name}')
+        else:
+            monitors.append(host)
+    for mon in monitors:
+        if type == 'syn':
+            mon.cmd(f'hping3 -c 50 -S -p 80 -q {victim.IP()} > {dir_name}/{mon.name}.csv &')
+        else:
+            mon.cmd(f'ping -c 50 -q {victim.IP()} > {dir_name}/{mon.name}.csv &')
     CLI(net)
     net.stop()
 
