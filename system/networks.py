@@ -38,6 +38,8 @@ def tree(n_switch=1, n_host=2):
         switch.start([c1])
     net.start()
 
+    net.waitConnected()
+
     return net
 
 def spineLeafNet(n=6):
