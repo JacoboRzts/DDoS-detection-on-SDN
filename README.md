@@ -26,8 +26,19 @@ feature:install odl-openflowplugin-flow-services-rest odl-openflowplugin-app-tab
 ```sh
 docker start controller mininet
 ```
-6. To make any test you can do:
+6. To run a test you can execute the command:
 ```sh
-sh test [normal | ddos | ping] {n_switch} {k_hosts}
-# be careful with large number of switch and hosts
+sh simulate normal 2 3
 ```
+
+The type of tests that you can run at the moment are:
+- `normal`: execute a test with n switches and k hosts.
+- `ping`: same that normal but it execute a ping test before enter to the CLI.
+- `ddos`: execute a network with n switches and k host that start and DoS attack. With a las parameter you can set different attacks: `syn` and `icmp` (by default).
+
+The syntax is:
+```sh
+sh simulate type n k [syn] # optional for the ddos simulation
+```
+
+> [!danger] Be careful with large number of hosts, especially with the DDoS simulation.
