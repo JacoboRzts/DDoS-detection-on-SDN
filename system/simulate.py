@@ -2,9 +2,18 @@ from mininet.log import setLogLevel
 from mininet.cli import CLI
 import networks
 import sys
-# from datetime import datetime
+import numpy as np
+from math import floor
 
-def ddos(n_switch=2, k_hosts=2, type='icmp'):
+def splitHosts(hosts, monitor_size):
+    size = floor(monitor_size * len(hosts))
+    print(f'size = {size}')
+    np.random.shuffle(hosts)
+    monitors = hosts[:size-1]
+    attackers = hosts[size:]
+    return monitors, attackers
+
+def ddos(n_switch=2, k_hosts=2, type='icmp', time=20):
     setLogLevel('output')
     net = networks.tree(n_switch, k_hosts)
 
@@ -14,27 +23,18 @@ def ddos(n_switch=2, k_hosts=2, type='icmp'):
     print(f'Starting web server from server with IP {victim.IP()}:80')
     victim.cmd(f'python3 -m http.server 80 &')
 
-    # time = tiempo2 = datetime.now().strftime("%Y%m%d%H%M")
-    name = f'DDOS_{type.upper()}_{n_switch}x{k_hosts}'
-
+    if type == 'syn':
+        cmd_attack = f'hping3 -S --rand-source --flood -d 2048 -p 80 {victim.IP()} &'
+    else:
+        cmd_attack = f'hping3 -1 --rand-source --flood -d 1024 {victim.IP()} &'
 
     hosts = net.hosts
-    monitors = []
-    for host in hosts[1:]:
-        if not str(k_hosts) in host.name:
-            if type == 'syn':
-                host.cmd(f'hping3 -S -p 80 --rand-source --flood -d 2048 {victim.IP()} &')
-            else:
-                host.cmd(f'hping3 -1 --rand-source --flood -d 2048 {victim.IP()} &')
-            print(f'{type.upper()} DoS attack started from {host.name}')
-        else:
-            monitors.append(host)
+    monitors, attackers = splitHosts(net.hosts[1:], 0.5)
 
-    for mon in monitors:
-        if type == 'syn':
-            mon.cmd(f'hping3 -c 50 -S -p 80 -q {victim.IP()} > {name}_{mon.name}.csv &')
-        else:
-            mon.cmd(f'ping -c 50 -q {victim.IP()} > {name}_{mon.name}.csv &')
+    for attacker in attackers:
+        attacker.cmd(cmd_attack)
+        print(f'{type.upper()} DoS attack started from {attacker.name}')
+
     CLI(net)
     net.stop()
 
