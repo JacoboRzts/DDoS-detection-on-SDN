@@ -13,7 +13,7 @@ def splitHosts(hosts, monitor_size):
     attackers = hosts[size:]
     return monitors, attackers
 
-def ddos(n_switch=2, k_hosts=2, type='icmp'):
+def ddos(n_switch=2, k_hosts=2):
     setLogLevel('output')
     net = networks.tree(n_switch, k_hosts)
 
@@ -23,18 +23,13 @@ def ddos(n_switch=2, k_hosts=2, type='icmp'):
     print(f'Starting web server from server with IP {victim.IP()}:80')
     victim.cmd(f'python3 -m http.server 80 &')
 
-    if type == 'syn':
-        cmd_attack = f'hping3 -S --rand-source --flood -d 2048 -p 80 {victim.IP()} &'
-    else:
-        cmd_attack = f'hping3 -1 --rand-source --flood -d 1024 {victim.IP()} &'
-
     hosts = net.hosts
     monitors, attackers = splitHosts(net.hosts[1:], 0.4)
 
     for attacker in attackers:
         size = randint(64, 2048)
         attacker.cmd(f'hping3 -S --rand-source --flood -d {size} -p 80 {victim.IP()} &')
-        print(f'{type.upper()} DoS attack started from {attacker.name} with {size} data size.')
+        print(f'DoS attack started from {attacker.name} with {size} data size.')
 
     # monitors[0].cmd(f'ping -c 50 -q {victim.IP()} >> test{n_switch}x{k_hosts}.txt')
 
@@ -67,11 +62,7 @@ if __name__ == '__main__':
             case 'normal':
                 normal(switchs, hosts)
             case 'ddos':
-                if len(sys.argv) > 4:
-                    type = sys.argv[4]
-                    ddos(switchs, hosts, type)
-                else:
-                    ddos(switchs, hosts)
+                ddos(switchs, hosts)
             case _:
                 print('No se selecciono ningun tipo de test')
     else:
