@@ -39,6 +39,13 @@ def ddos(n_switch=2, k_hosts=2):
 def normal(n_switch=2, n_host=3):
     setLogLevel('output')
     net = networks.tree(n_switch, n_host)
+    hosts = net.hosts[1:]
+    victim = net.hosts[0]
+    for host in hosts:
+        size = randint(32, 1024)
+        time = randint(10000, 100000)
+        print(f'Random message from {host.name} with size {size}')
+        host.cmd(f'hping3 -S --rand-source -d {size} -p 80 -i u{time} {victim.IP()} &')
     CLI(net)
     net.stop()
 
