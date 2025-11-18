@@ -14,7 +14,7 @@ sudo sh deploy
 3. For the very first time you have to install the next tools in the mininet container:
 ```sh
 apt update
-apt install -y hping3 tshark netcat
+apt install -y hping3 tshark netcat python3-numpy
 ```
 
 4. Also need to install the OpenFlow plugin on the Opendaylight controller container:
@@ -32,13 +32,13 @@ sh simulate normal 2 3
 ```
 
 The type of tests that you can run at the moment are:
-- `normal`: execute a test with n switches and k hosts.
-- `ping`: same that normal but it execute a ping test before enter to the CLI.
-- `ddos`: execute a network with n switches and k host that start and DoS attack. With a las parameter you can set different attacks: `syn` and `icmp` (by default).
+- `normal`: execute a test with n switches and k hosts where each host run a ping with a random time and data size.
+- `ping`: create the network with n switch and k hosts, and execute a `pingall`, then enter to the mininet CLI.
+- `ddos`: execute a network with n switches and k host that start and DoS attack. 
 
-The syntax is:
+Syntaxis: 
 ```sh
-sh simulate type n k [syn] # optional for the ddos simulation
+sh simulate [type] [n switchs] [k hosts] 
 ```
 
 > Be careful with large number of hosts, especially with the DDoS simulation.
