@@ -3,7 +3,6 @@
 TYPE=$1    # Type of test to run
 SWITCH=$2  # Number of switch
 HOST=$3    # Number of hosts
-ATTACK=$4    # Type of DDoS attack
 
 cd system
 
@@ -13,6 +12,10 @@ docker cp -q networks.py mininet:/root/
 echo "Uploading the simulations"
 docker cp -q simulate.py mininet:/root/
 
-python3 -c "from generate import tree_flows; tree_flows($SWITCH, $HOST)"
+if [ "$TYPE" == "spineleaf" ]; then
+    python3 -c "from generate import second_experiment_flows; second_experiment_flows()"
+else
+    python3 -c "from generate import tree_flows; tree_flows($SWITCH, $HOST)"
+fi
 
-docker exec -it mininet python3 /root/simulate.py $TYPE $SWITCH $HOST $ATTACK
+docker exec -it mininet python3 /root/simulate.py $TYPE $SWITCH $HOST

@@ -42,14 +42,12 @@ def tree(n_switch=1, n_host=2):
 
     return net
 
-def spineLeafNet(n=6):
+def spineLeafNet(n=4):
     if n < 4 or n % 2 == 1:
         return False
 
     net = Mininet(controller=RemoteController, switch=OVSSwitch)
-    c1 = net.addController(
-        "c1", controller=RemoteController, ip="172.17.0.2", port=6653
-    )
+    c1 = net.addController('c1', controller=RemoteController, ip=CONTROLLER_IP, port=CONTROLLER_PORT)
 
     switchArray = []
 
@@ -73,11 +71,7 @@ def spineLeafNet(n=6):
 
     net.build()
     c1.start()
-
     for switch in switchArray:
         switch.start([c1])
-
     net.start()
-
-    CLI(net)
-    net.stop()
+    return net

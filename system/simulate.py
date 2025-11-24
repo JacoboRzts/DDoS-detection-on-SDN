@@ -13,6 +13,12 @@ def splitHosts(hosts, monitor_size):
     attackers = hosts[size:]
     return monitors, attackers
 
+def spineleaf():
+    setLogLevel('output')
+    net = networks.spineLeafNet()
+    CLI(net)
+    net.stop()
+
 def ddos(n_switch=2, k_hosts=2):
     setLogLevel('output')
     net = networks.tree(n_switch, k_hosts)
@@ -30,8 +36,6 @@ def ddos(n_switch=2, k_hosts=2):
         size = randint(64, 2048)
         attacker.cmd(f'hping3 -S --rand-source --flood -d {size} -p 80 {victim.IP()} &')
         print(f'DoS attack started from {attacker.name} with {size} data size.')
-
-    # monitors[0].cmd(f'ping -c 50 -q {victim.IP()} >> test{n_switch}x{k_hosts}.txt')
 
     CLI(net)
     net.stop()
@@ -57,9 +61,11 @@ def conectivity(n_switch=2, n_host=3):
     net.stop()
 
 if __name__ == '__main__':
-    if len(sys.argv) > 3:
+    if len(sys.argv) > 1:
+        type = (sys.argv[1])
 
-        type = sys.argv[1]
+    if len(sys.argv) > 3 :
+        type = (sys.argv[1])
         switchs = int(sys.argv[2])
         hosts = int(sys.argv[3])
 
@@ -73,4 +79,7 @@ if __name__ == '__main__':
             case _:
                 print('No se selecciono ningun tipo de test')
     else:
-        print('Se necesita al menos un argumento.')
+        if type == 'spineleaf':
+            spineleaf()
+        else:
+            print('Se necesita al menos un argumento.')
