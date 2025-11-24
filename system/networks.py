@@ -8,6 +8,9 @@ CONTROLLER_IP = "172.17.0.2"
 CONTROLLER_PORT = 6653
 
 def tree(n_switch=1, n_host=2):
+    """
+    Define a mininet network with the simple tree topology, where each switch has k host and is connected with the s1 first switch that only has a server host.
+    """
     net = Mininet(controller=RemoteController, switch=OVSSwitch, link=TCLink)
     c1 = net.addController('c1', controller=RemoteController, ip=CONTROLLER_IP, port=CONTROLLER_PORT)
     switch_array = []
@@ -31,6 +34,9 @@ def tree(n_switch=1, n_host=2):
     return net
 
 def spineLeafNet(n=4):
+    """
+    Define a spine leaf topology on mininet and connect with the controller
+    """
     if n < 4 or n % 2 == 1:
         return False
 

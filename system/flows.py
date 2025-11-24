@@ -3,14 +3,17 @@ import requests
 CONTROLLER_IP='172.17.0.2'
 AUTH=('admin', 'admin')
 
-"""
-Creates a flow with the given values
-id: the id of the flow
-eth_type: the ethernet type, 2048 for IPv4 and 2054 for ARP protocol
-ip_dst: the IPv4 destination in a string, for example: '0.0.0.0/32' if it is setted to 0 then the field its not setted.
-out_node: the output node it could be a number or a string like: 'NORMAL'
-"""
 def define(id, priority, eth_type, out_port, in_port='', ip_src='', ip_dst='', switch=1):
+    """
+    Creates a json flow with the given values.
+    id: identifier of the flow.
+    priority: priority of the flow have to be and integer or a string with and integer.
+    eth_type: ethernet type to the flow to match (hexadecimal code).
+    out_port: output port of the flow, could be an interface or 'NORMAL'.
+    in_port: input interface of the switch, positive integer.
+    ip_src: IPv4 to match on input, if neccesary
+    ip_dst: IPv4 to match on output, if neccesary
+    """
     flow = {
         "flow": [
             {
@@ -54,12 +57,20 @@ def define(id, priority, eth_type, out_port, in_port='', ip_src='', ip_dst='', s
     return flow
 
 def load(flow, id):
+    """
+    Load a json flow generated on the IP openflow node.
+    flow: previous defined json flow with the function define()
+    id: the switch or openflow node number to where the flow is going to be updated.
+    """
     id_flow = flow['flow'][0]['id']
     url = f'http://{CONTROLLER_IP}:8181/rests/data/opendaylight-inventory:nodes/node=openflow:{id}/flow-node-inventory:table=0/flow={id_flow}'
     req = requests.request(method='PUT', json=flow, url=url, auth=('admin', 'admin'), headers={'Content-Type': 'application/json'})
     # print(f'{id_flow}: {req.status_code}')
 
 def cleanAll():
+    """
+    Removes ALL the flows of the controller, to avoid collisions.
+    """
     print('Removing old flows')
     for i in range(1, 10):
         req = requests.get(auth=AUTH, url=f'http://{CONTROLLER_IP}:8181/rests/data/opendaylight-inventory:nodes/node=openflow:{i}/flow-node-inventory:table=0')

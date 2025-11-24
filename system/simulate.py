@@ -7,6 +7,11 @@ from random import randint
 from math import floor
 
 def splitHosts(hosts, monitor_size):
+    """
+    Separate an array of mininet host into two parts.
+    hosts: array with mininet hosts
+    monitor_size: % of the number of monitors in the network, as a float for example: 0.4 -> 40% monitors and 60% attackers
+    """
     size = floor(monitor_size * len(hosts))
     np.random.shuffle(hosts)
     monitors = hosts[:size-1]
@@ -14,12 +19,18 @@ def splitHosts(hosts, monitor_size):
     return monitors, attackers
 
 def spineleaf():
+    """
+    Start the Spine Leaf Topology on mininet.
+    """
     setLogLevel('output')
     net = networks.spineLeafNet()
     CLI(net)
     net.stop()
 
 def ddos(n_switch=2, k_hosts=2):
+    """
+    Simulate a DDoS attack with NxK switches and hosts, with the tree topology.
+    """
     setLogLevel('output')
     net = networks.tree(n_switch, k_hosts)
 
@@ -41,6 +52,9 @@ def ddos(n_switch=2, k_hosts=2):
     net.stop()
 
 def normal(n_switch=2, n_host=3):
+    """
+    Simulate a normal traffic of a network using the tree topology.
+    """
     setLogLevel('output')
     net = networks.tree(n_switch, n_host)
     hosts = net.hosts[1:]
@@ -54,6 +68,9 @@ def normal(n_switch=2, n_host=3):
     net.stop()
 
 def conectivity(n_switch=2, n_host=3):
+    """
+    Start a tree topology and inmediatly run a ping test.
+    """
     setLogLevel('output')
     net = networks.tree(n_switch, n_host)
     net.pingAll()

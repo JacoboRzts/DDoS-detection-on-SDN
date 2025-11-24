@@ -1,6 +1,11 @@
 import flows
 
+
 def second_experiment_flows():
+    """
+    Define and upload all the neccesary flow for the Spine Leaf Topology example, it takes a better
+    control of how the packet travels on the network.
+    """
     print('Removing old flows')
     flows.cleanAll()
     print('Upload new flows')
@@ -26,6 +31,11 @@ def second_experiment_flows():
     flows.load(flows.define(id=44, priority=9, eth_type=2048, ip_dst='10.0.0.4/32', out_port=4), 4)
 
 def tree_flows(n_switch=1, n_host=2):
+    """
+    Define and update the neccesary flows for a tree topology with N switches, K host and a Server.
+    n_switch: number of switches that the network will have
+    k_host: number of hosts for each switch.
+    """
     flows.cleanAll()
     print('Upload new flows')
     for i in range(1, n_switch+2):
