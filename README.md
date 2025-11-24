@@ -1,7 +1,8 @@
+# DDoS detection on a SDN with Mininet and OpenDayLight 
 DDoS detection on SDN is a project for the subjects: **Network Modeling and Simulation** and **Machine Learning** from the **UASLP**. The goal of this project is to create an intelligent system to detect and mitigate DDoS attacks on a SDN simulated using Mininet, as controller this project use OpenDayLight with the OpenFlow plugin to controll the flows in the network.
 
 
-# Setup
+## Setup
 How to set up and test:
 1. Clone this repository using:
 ```sh
@@ -44,7 +45,7 @@ sh simulate {normal | ping | ddos | spineleaf} [n] [k]
 
 > Be careful with large number of hosts, especially with the DDoS simulation.
 
-# TODO
+## TODO
 There are a lot of things that could be good to implement or improve in this project, there is a list of some of they: 
 
 Optimize:
