@@ -24,14 +24,16 @@ def ddos(n_switch=2, k_hosts=2):
     print(f'>>> Starting the simple web server on server')
     victim.cmd('python3 -m http.server 80 &')
 
-    monitors, attackers = networks.splitHosts(net.hosts[1:], 0.4)
+    mon_size = 0.4
+    monitors, attackers = networks.splitHosts(net.hosts[1:], mon_size)
 
-    print('>>> DoS attack start')
+    print(f'>>> DoS attack start with {(1 - mon_size) * 100}% of attackers')
 
     print('>>> Attackers: ', end='')
     for attacker in attackers:
         size = randint(64, 1024)
         attacker.cmd(f'hping3 -S -p 80 --rand-source --flood -d {size} 10.0.0.1 &')
+        attacker.cmd(f'echo "{size}" >> datasets/size_ddos.csv')
         print(attacker.name, end=' ')
     print()
 
@@ -58,7 +60,9 @@ def normal(n_switch=2, n_host=3):
     for host in hosts:
         size = randint(8, 1024)
         host.cmd(f'hping3 -S --rand-source -d {size} -p 80 --fast 10.0.0.1 &')
+        host.cmd(f'echo "{size}" >> datasets/size_normal.csv')
     CLI(net)
+
     net.stop()
 
 def conectivity(n_switch=2, n_host=3):
