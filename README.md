@@ -28,17 +28,18 @@ docker start controller mininet
 ```
 6. To run a test you can execute the command:
 ```sh
-sh simulate normal 2 3
+sh simulate ping 3 2
 ```
 
 The type of tests that you can run at the moment are:
 - `normal`: execute a test with n switches and k hosts where each host run a ping with a random time and data size.
 - `ping`: create the network with n switch and k hosts, and execute a `pingall`, then enter to the mininet CLI.
 - `ddos`: execute a network with n switches and k host that start and DoS attack. 
+- `spineleaf`: execute an experiment with 2 switches and 4 hosts with an especific flow (n and k params. are not necessaries).
 
-Syntaxis: 
+Syntaxis:
 ```sh
-sh simulate [type] [n switchs] [k hosts] 
+sh simulate {normal | ping | ddos | spineleaf} [n] [k]
 ```
 
 > Be careful with large number of hosts, especially with the DDoS simulation.
