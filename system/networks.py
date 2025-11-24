@@ -7,18 +7,6 @@ from mininet.link import TCLink
 CONTROLLER_IP = "172.17.0.2"
 CONTROLLER_PORT = 6653
 
-def simple(n=3):
-    net = Mininet(controller=RemoteController, switch=OVSSwitch, link=TCLink, host=CPULimitedHost)
-    net.addController('c1', controller=RemoteController, ip=CONTROLLER_IP, port=CONTROLLER_PORT )
-    switch = net.addSwitch('s1', protocols="OpenFlow13")
-    for i in range(n):
-        host = net.addHost(f'h{i+1}')
-        net.addLink(switch, host)
-
-    net.build()
-    net.start()
-    return net
-
 def tree(n_switch=1, n_host=2):
     net = Mininet(controller=RemoteController, switch=OVSSwitch, link=TCLink)
     c1 = net.addController('c1', controller=RemoteController, ip=CONTROLLER_IP, port=CONTROLLER_PORT)
