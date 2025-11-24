@@ -42,3 +42,16 @@ sh simulate [type] [n switchs] [k hosts]
 ```
 
 > Be careful with large number of hosts, especially with the DDoS simulation.
+
+# TODO
+There are a lot of things that could be good to implement or improve in this project, there is a list of some of they: 
+
+Optimize:
+- [ ] How the flows are removed.
+- [ ] How the Spine Leaf instructions are loaded.
+
+Problems: 
+- [ ] The maximum size of a network is 6x5 hosts and one server.
+
+Improvements: 
+- [ ] Add a Dockerfile and docker-compose to the mininet network.
