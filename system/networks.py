@@ -3,6 +3,8 @@
 from mininet.net import Mininet
 from mininet.node import OVSSwitch, RemoteController, CPULimitedHost
 from mininet.link import TCLink
+from math import floor
+from numpy.random import shuffle
 
 CONTROLLER_IP = "172.17.0.2"
 CONTROLLER_PORT = 6653
@@ -69,3 +71,15 @@ def spineLeafNet(n=4):
         switch.start([c1])
     net.start()
     return net
+
+def splitHosts(hosts, monitor_size):
+    """
+    Separate an array of mininet host into two parts.
+    hosts: array with mininet hosts
+    monitor_size: % of the number of monitors in the network, as a float for example: 0.4 -> 40% monitors and 60% attackers
+    """
+    size = floor(monitor_size * len(hosts))
+    shuffle(hosts)
+    monitors = hosts[:size-1]
+    attackers = hosts[size:]
+    return monitors, attackers
