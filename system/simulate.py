@@ -62,7 +62,6 @@ def normal(n_switch=2, n_host=3):
         host.cmd(f'hping3 -S --rand-source -d {size} -p 80 --fast 10.0.0.1 &')
         host.cmd(f'echo "{size}" >> datasets/size_normal.csv')
     CLI(net)
-
     net.stop()
 
 def conectivity(n_switch=2, n_host=3):

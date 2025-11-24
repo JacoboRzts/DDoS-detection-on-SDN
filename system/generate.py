@@ -6,9 +6,7 @@ def second_experiment_flows():
     Define and upload all the neccesary flow for the Spine Leaf Topology example, it takes a better
     control of how the packet travels on the network.
     """
-    print('Removing old flows')
     flows.cleanAll()
-    print('Upload new flows')
 
     # Protocolos ARP
     for i in range(2, 5):
@@ -37,7 +35,6 @@ def tree_flows(n_switch=1, n_host=2):
     k_host: number of hosts for each switch.
     """
     flows.cleanAll()
-    print('Upload new flows')
     for i in range(1, n_switch+2):
         flows.load(flows.define(id=f'{i}0', priority=4, eth_type=2054, out_port='NORMAL'), i)    # ARP
         flows.load(flows.define(id=f'{i}1', priority=9, eth_type=2048, out_port='NORMAL'), i)    # Normal IPv4 Flow

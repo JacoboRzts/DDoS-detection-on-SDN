@@ -6,16 +6,19 @@ HOST=$3    # Number of hosts
 
 cd system
 
-echo "Uploading the network"
+echo "+ Uploading the network"
 docker cp -q networks.py mininet:/root/
 
-echo "Uploading the simulations"
+echo "+ Uploading the simulations"
 docker cp -q simulate.py mininet:/root/
 
+echo "+ Updating the flows"
 if [ "$TYPE" == "spineleaf" ]; then
     python3 -c "from generate import second_experiment_flows; second_experiment_flows()"
 else
     python3 -c "from generate import tree_flows; tree_flows($SWITCH, $HOST)"
 fi
 
+echo "+ Starting the simulation"
+echo ""
 docker exec -it mininet python3 /root/simulate.py $TYPE $SWITCH $HOST
