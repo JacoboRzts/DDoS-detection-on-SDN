@@ -42,6 +42,7 @@ def ddos(n_switch=2, k_hosts=2):
         print(monitor.name, end=' ')
     print()
 
+    print('\n>>> Starting CLI')
     CLI(net)
     net.stop()
 

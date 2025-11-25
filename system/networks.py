@@ -17,13 +17,13 @@ def tree(n_switch=1, n_host=2):
     c1 = net.addController('c1', controller=RemoteController, ip=CONTROLLER_IP, port=CONTROLLER_PORT)
     switch_array = []
     switch_array.append(net.addSwitch(name='s1', protocols="OpenFlow13"))
-    net.addLink(switch_array[0], net.addHost(name=f'server', ip=f'10.0.0.1/16'), bw=4)
+    net.addLink(switch_array[0], net.addHost(name=f'server', ip=f'10.0.0.1/16', mac='AA:'*6), bw=4)
 
     for i in range(1, n_switch+1):
         switch_array.append(net.addSwitch(f's{i+1}', protocols="OpenFlow13"))
         net.addLink(switch_array[i], switch_array[0])
         for j in range(n_host):
-            net.addLink(switch_array[i], net.addHost(f'h{i}{j+1}', ip=f'10.0.{i}.{j+1}/16'))
+            net.addLink(switch_array[i], net.addHost(f'h{i}{j+1}', ip=f'10.0.{i}.{j+1}/16', mac='00:'*5+f'{i}{j}' ))
 
     net.build()
     c1.start()
