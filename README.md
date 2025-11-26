@@ -4,11 +4,12 @@ DDoS detection on SDN is a project for the subjects: **Network Modeling and Simu
 
 ## Setup
 How to set up and test:
+
 1. Clone this repository using:
 ```sh
 git clone https://github.com/JacoboRzts/DDoS-detection-on-SDN.git
-cd DDoS-detection-on-SDN
 ```
+
 2. Run the containers with:
 ```sh
 dcoker-compose up 
@@ -18,9 +19,10 @@ dcoker-compose up
 ```
 feature:install odl-openflowplugin-flow-services-rest odl-openflowplugin-app-table-miss-enforcer odl-openflowplugin-nxm-extensions
 ```
+
 > You can use `ssh -p 8181 karaf@172.20.0.11` to connect the controller, using the password: karaf
 
-6. To run a test you can execute the command on the main folder:
+4. To run a test you can execute the command on the main folder:
 ```sh
 sh simulate ping 3 2
 ```
@@ -49,6 +51,4 @@ Optimize:
 
 Problems: 
 - [ ] The maximum size of a network is 6x5 hosts and one server.
-
-Improvements: 
-- [ ] Add a Dockerfile and docker-compose to the mininet network.
+- [ ] Docker-compose is not working.

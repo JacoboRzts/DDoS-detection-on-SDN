@@ -1,6 +1,6 @@
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
-from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
@@ -9,11 +9,11 @@ from time import time
 
 print('Loading data', end='\t')
 start = time()
-x, y = data.load(1000)
+x, y = data.load()
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=8)
 print(time() - start)
 
-model = SVC(kernel='linear', gamma='auto', C=0.1)
+model = LinearSVC(C=0.1)
 
 start = time()
 print('Training', end='\t')

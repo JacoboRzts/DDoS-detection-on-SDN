@@ -19,4 +19,4 @@ EXPOSE 6633 6653 8080 8181
 
 CMD ["./bin/karaf", "server"]
 
-# Entry the container: ssh -p 8101 karaf@[conainer_ip]
+# Entry the container: ssh -p 8181 karaf@[conainer_ip]
