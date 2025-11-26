@@ -18,7 +18,7 @@ dcoker-compose up
 ```
 feature:install odl-openflowplugin-flow-services-rest odl-openflowplugin-app-table-miss-enforcer odl-openflowplugin-nxm-extensions
 ```
-> You can use `ssh karaf@172.20.0.11` to connect the controller, using the password: karaf
+> You can use `ssh -p 8181 karaf@172.20.0.11` to connect the controller, using the password: karaf
 
 6. To run a test you can execute the command on the main folder:
 ```sh
